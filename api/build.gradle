@@ -1,0 +1,13 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.squareup.retrofit2:retrofit:2.8.1"
+    implementation "com.squareup.retrofit2:converter-moshi:2.8.1"
+    implementation "com.squareup.retrofit2:converter-scalars:2.8.1"
+    implementation project(":model")
+}
+
+sourceCompatibility = "8"
+targetCompatibility = "8"

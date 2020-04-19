@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">NextDNS Console</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <string name="home_second">Home Second</string>
+    <string name="menu_setup">Setup</string>
+    <string name="menu_security">Security</string>
+    <string name="menu_privacy">Privacy</string>
+    <string name="menu_parental_control">Parental Control</string>
+    <string name="menu_blacklist">Blacklist</string>
+    <string name="menu_whitelist">Whitelist</string>
+    <string name="menu_analytics">Analytics</string>
+    <string name="menu_logs">Logs</string>
+    <string name="menu_settings">Settings</string>
+    <string name="label_id">ID</string>
+    <string name="label_dns_over_tls">DNS-over-TLS</string>
+    <string name="label_dns_over_https">DNS-over-HTTPS</string>
+    <string name="label_ipv6">IPv6</string>
+</resources>
