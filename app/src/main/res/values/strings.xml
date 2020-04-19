@@ -20,4 +20,8 @@
     <string name="label_dns_over_tls">DNS-over-TLS</string>
     <string name="label_dns_over_https">DNS-over-HTTPS</string>
     <string name="label_ipv6">IPv6</string>
+
+
+    <string name="dns_over_tls">%1s.dns.nextdns.io</string>
+    <string name="dns_over_https">https://dns.nextdns.io/%1s</string>
 </resources>

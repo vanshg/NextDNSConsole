@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKeys
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
+import kotlinx.android.synthetic.main.fragment_setup.view.*
 import sh.van.nextdns.api.NextDNSService
+import sh.van.nextdnsconsole.App
+import sh.van.nextdnsconsole.R
 import sh.van.nextdnsconsole.databinding.FragmentSetupBinding
 import timber.log.Timber
 
@@ -25,23 +26,15 @@ class SetupFragment : Fragment() {
     ): View? {
         val setupViewModel: SetupViewModel by viewModels()
         val binding = FragmentSetupBinding.inflate(inflater, container, false)
-        val masterKeyAlias: String = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
-
-        val sharedPreferences = EncryptedSharedPreferences.create(
-            "secret_shared_prefs",
-            masterKeyAlias,
-            requireContext(),
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-        )
 
         setupViewModel.setup.observe(viewLifecycleOwner, Observer { setup ->
             binding.id.text = setup.id
+            binding.dnsOverTls.text = getString(R.string.dns_over_tls, setup.id)
+            binding.dnsOverHttps.text = getString(R.string.dns_over_https, setup.id)
             Timber.d("Got %s", setup)
         })
 
-        val cookieJar = PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(sharedPreferences))
-        val service = NextDNSService.get(cookieJar)
+        val service = App.getService(requireContext())
         setupViewModel.getSetup(service)
         return binding.root
     }
