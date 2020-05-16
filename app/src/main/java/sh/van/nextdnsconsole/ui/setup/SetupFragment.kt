@@ -29,8 +29,7 @@ class SetupFragment : Fragment() {
             Timber.d("Got %s", setup)
         })
 
-        val service = App.getService(requireContext())
-        setupViewModel.getSetup(service)
+        setupViewModel.getSetup(App.instance.service)
         return binding.root
     }
 }

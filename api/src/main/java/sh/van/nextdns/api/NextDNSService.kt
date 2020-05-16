@@ -11,11 +11,15 @@ import sh.van.nextdns.model.*
 interface NextDNSService {
     companion object {
         private lateinit var service: NextDNSService
-        fun get(cookieJar: CookieJar): NextDNSService {
+        fun get(
+            cookieJar: CookieJar,
+            clientBuilder: OkHttpClient.Builder = OkHttpClient.Builder().cookieJar(cookieJar)
+        ): NextDNSService {
             if (!::service.isInitialized) {
                 service = Retrofit.Builder()
-                    .client(OkHttpClient.Builder().cookieJar(cookieJar).build())
+                    .client(clientBuilder.build())
                     .baseUrl("https://api.nextdns.io")
+                    .addConverterFactory(LoginSuccessConverterFactory())
                     .addConverterFactory(MoshiConverterFactory.create())
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .build()
@@ -27,7 +31,7 @@ interface NextDNSService {
     }
 
     @POST("/accounts/@login")
-    suspend fun login(@Body loginRequest: LoginRequest) // TODO: error?
+    suspend fun login(@Body loginRequest: LoginRequest): LoginResponse
 
     @GET("/accounts/@me")
     suspend fun getProfile(

@@ -6,7 +6,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
 
-    <string name="home_second">Home Second</string>
+    <string name="menu_login">Login</string>
     <string name="menu_setup">Setup</string>
     <string name="menu_security">Security</string>
     <string name="menu_privacy">Privacy</string>
@@ -24,4 +24,8 @@
 
     <string name="dns_over_tls">%1s.dns.nextdns.io</string>
     <string name="dns_over_https">https://dns.nextdns.io/%1s</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_button_text">Log In</string>
+    <string name="login_registration_nudge">To register, visit nextdns.io</string>
 </resources>
