@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import sh.van.nextdnsconsole.databinding.FragmentBlacklistBinding
 
 class BlacklistFragment : Fragment() {
@@ -14,7 +13,7 @@ class BlacklistFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val blacklistViewModel: BlacklistViewModel by viewModels()
         val binding = FragmentBlacklistBinding.inflate(inflater, container, false)
         return binding.root

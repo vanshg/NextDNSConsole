@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import sh.van.nextdnsconsole.databinding.FragmentPrivacyBinding
 
 class PrivacyFragment : Fragment() {
@@ -14,7 +13,7 @@ class PrivacyFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val privacyViewModel: PrivacyViewModel by viewModels()
         val binding = FragmentPrivacyBinding.inflate(inflater, container, false)
         return binding.root

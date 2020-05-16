@@ -7,11 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.franmontiel.persistentcookiejar.PersistentCookieJar
-import com.franmontiel.persistentcookiejar.cache.SetCookieCache
-import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
-import kotlinx.android.synthetic.main.fragment_setup.view.*
-import sh.van.nextdns.api.NextDNSService
 import sh.van.nextdnsconsole.App
 import sh.van.nextdnsconsole.R
 import sh.van.nextdnsconsole.databinding.FragmentSetupBinding
@@ -23,7 +18,7 @@ class SetupFragment : Fragment() {
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val setupViewModel: SetupViewModel by viewModels()
         val binding = FragmentSetupBinding.inflate(inflater, container, false)
 
