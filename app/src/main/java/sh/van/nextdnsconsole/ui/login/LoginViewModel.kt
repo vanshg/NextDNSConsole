@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import okhttp3.HttpUrl
 import sh.van.nextdns.model.LoginErrors
 import sh.van.nextdns.model.LoginRequest
 import sh.van.nextdnsconsole.App
@@ -23,7 +24,18 @@ class LoginViewModel : ViewModel() {
 
     val loginError = MutableLiveData<LoginErrors>()
 
-    fun authenticate(context: Context, email: String, password: String) {
+    fun checkAuthState() {
+        val url = HttpUrl.parse("https://api.nextdns.io")!!
+        // Cookie Jar will automatically remove expired cookies
+        val cookies = App.instance.cookieJar.loadForRequest(url)
+        if (cookies.map { it.name() }.contains("pst")) {
+            authenticationState.value = Authenticated
+        } else {
+            authenticationState.value = Unauthenticated
+        }
+    }
+
+    fun authenticate(email: String, password: String) {
         viewModelScope.launch {
             try {
                 val loginResponse = App.instance.service.login(LoginRequest(email, password))

@@ -46,8 +46,8 @@ dependencies {
     implementation "com.google.android.material:material:1.1.0"
     implementation "com.jakewharton.timber:timber:4.7.1"
     implementation "com.github.franmontiel:PersistentCookieJar:v1.0.1"
-    debugImplementation "com.github.ChuckerTeam.Chucker:library:3.2.0"
-    releaseImplementation "com.github.ChuckerTeam.Chucker:library-no-op:3.2.0"
+    debugImplementation "com.readystatesoftware.chuck:library:1.1.0"
+    releaseImplementation "com.readystatesoftware.chuck:library-no-op:1.1.0"
     implementation project(":model")
     implementation project(":api")
     testImplementation "junit:junit:4.12"

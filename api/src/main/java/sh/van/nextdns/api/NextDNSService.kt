@@ -13,11 +13,11 @@ interface NextDNSService {
         private lateinit var service: NextDNSService
         fun get(
             cookieJar: CookieJar,
-            clientBuilder: OkHttpClient.Builder = OkHttpClient.Builder().cookieJar(cookieJar)
+            clientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
         ): NextDNSService {
             if (!::service.isInitialized) {
                 service = Retrofit.Builder()
-                    .client(clientBuilder.build())
+                    .client(clientBuilder.cookieJar(cookieJar).build())
                     .baseUrl("https://api.nextdns.io")
                     .addConverterFactory(LoginSuccessConverterFactory())
                     .addConverterFactory(MoshiConverterFactory.create())

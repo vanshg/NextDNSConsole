@@ -3,17 +3,17 @@ package sh.van.nextdnsconsole
 import android.app.Application
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
-import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
+import com.readystatesoftware.chuck.ChuckInterceptor
 import okhttp3.CookieJar
 import okhttp3.OkHttpClient
 import sh.van.nextdns.api.NextDNSService
 import timber.log.Timber
 
 class App : Application() {
-    private lateinit var cookieJar: CookieJar
+    lateinit var cookieJar: CookieJar
     lateinit var service: NextDNSService
 
     override fun onCreate() {
@@ -30,7 +30,7 @@ class App : Application() {
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             )))
         service = NextDNSService.get(cookieJar,
-            OkHttpClient.Builder().addInterceptor(ChuckerInterceptor(this)))
+            OkHttpClient.Builder().addInterceptor(ChuckInterceptor(this)))
     }
 
     companion object {

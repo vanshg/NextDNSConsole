@@ -26,9 +26,7 @@ class LoginFragment : Fragment() {
         loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer {
             when (it) {
                 Authenticated -> navController.navigate(R.id.nav_setup)
-                Unauthenticated -> Timber.d("Unauth")
-                InvalidAuthentication -> Timber.d("InvalidAuth")
-                null -> Timber.d("null (!)")
+                else -> Timber.d("Auth State: $it")
             }
         })
 
@@ -41,11 +39,11 @@ class LoginFragment : Fragment() {
             binding.passwordInputLayout.error = null
             binding.emailInputLayout.error = null
             loginViewModel.authenticate(
-                requireContext(),
                 binding.emailInputLayout.editText!!.text.toString(),
                 binding.passwordInputLayout.editText!!.text.toString()
             )
         }
+        loginViewModel.checkAuthState()
         return binding.root
     }
 }

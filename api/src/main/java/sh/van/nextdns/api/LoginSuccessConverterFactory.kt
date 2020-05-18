@@ -17,7 +17,11 @@ internal class LoginSuccessConverterFactory : Converter.Factory() {
         val nextResponseBodyConverter =
             retrofit.nextResponseBodyConverter<Any?>(converterFactory(), type, annotations)
 
-        override fun convert(value: ResponseBody) =
-            if (value.contentLength() <= 2L) LoginResponse(true) else nextResponseBodyConverter.convert(value)
+        override fun convert(value: ResponseBody): Any? {
+            // Response content will be "OK" on login success
+            // We don't want to consume the response, so check contentLength instead of body
+            return if (value.contentLength() == 2L) LoginResponse(true)
+            else nextResponseBodyConverter.convert(value)
+        }
     }
 }
