@@ -29,4 +29,5 @@ enum class ServiceCategory(id: String) {
     SocialNetworks("social-networks"),
 }
 
+@JsonClass(generateAdapter = true)
 data class Active(@Json(name = "active") val active: Boolean?)
