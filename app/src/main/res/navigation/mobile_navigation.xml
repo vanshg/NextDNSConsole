@@ -11,47 +11,38 @@
         tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/nav_setup"
-        android:name="sh.van.nextdnsconsole.ui.setup.SetupFragment"
-        android:label="@string/menu_setup"
-        tools:layout="@layout/fragment_setup" />
+        android:name="sh.van.nextdnsconsole.ui.SetupFragment"
+        android:label="@string/menu_setup" />
     <fragment
         android:id="@+id/nav_security"
-        android:name="sh.van.nextdnsconsole.ui.security.SecurityFragment"
-        android:label="@string/menu_security"
-        tools:layout="@layout/fragment_security" />
+        android:name="sh.van.nextdnsconsole.ui.SecurityFragment"
+        android:label="@string/menu_security" />
     <fragment
         android:id="@+id/nav_privacy"
-        android:name="sh.van.nextdnsconsole.ui.privacy.PrivacyFragment"
-        android:label="@string/menu_privacy"
-        tools:layout="@layout/fragment_privacy" />
+        android:name="sh.van.nextdnsconsole.ui.PrivacyFragment"
+        android:label="@string/menu_privacy" />
     <fragment
         android:id="@+id/nav_parental_control"
-        android:name="sh.van.nextdnsconsole.ui.parentalcontrol.ParentalControlFragment"
-        android:label="@string/menu_parental_control"
-        tools:layout="@layout/fragment_parental_control" />
+        android:name="sh.van.nextdnsconsole.ui.ParentalControlFragment"
+        android:label="@string/menu_parental_control" />
     <fragment
         android:id="@+id/nav_blacklist"
-        android:name="sh.van.nextdnsconsole.ui.blacklist.BlacklistFragment"
-        android:label="@string/menu_blacklist"
-        tools:layout="@layout/fragment_blacklist" />
+        android:name="sh.van.nextdnsconsole.ui.BlacklistFragment"
+        android:label="@string/menu_blacklist" />
     <fragment
         android:id="@+id/nav_whitelist"
-        android:name="sh.van.nextdnsconsole.ui.whitelist.WhitelistFragment"
-        android:label="@string/menu_whitelist"
-        tools:layout="@layout/fragment_whitelist" />
+        android:name="sh.van.nextdnsconsole.ui.WhitelistFragment"
+        android:label="@string/menu_whitelist" />
     <fragment
         android:id="@+id/nav_analytics"
-        android:name="sh.van.nextdnsconsole.ui.analytics.AnalyticsFragment"
-        android:label="@string/menu_analytics"
-        tools:layout="@layout/fragment_analytics" />
+        android:name="sh.van.nextdnsconsole.ui.AnalyticsFragment"
+        android:label="@string/menu_analytics" />
     <fragment
         android:id="@+id/nav_logs"
-        android:name="sh.van.nextdnsconsole.ui.logs.LogsFragment"
-        android:label="@string/menu_logs"
-        tools:layout="@layout/fragment_logs" />
+        android:name="sh.van.nextdnsconsole.ui.LogsFragment"
+        android:label="@string/menu_logs" />
     <fragment
         android:id="@+id/nav_settings"
-        android:name="sh.van.nextdnsconsole.ui.settings.SettingsFragment"
-        android:label="@string/menu_settings"
-        tools:layout="@layout/fragment_settings" />
+        android:name="sh.van.nextdnsconsole.ui.SettingsFragment"
+        android:label="@string/menu_settings" />
 </navigation>

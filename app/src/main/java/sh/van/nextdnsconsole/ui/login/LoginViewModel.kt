@@ -1,7 +1,5 @@
 package sh.van.nextdnsconsole.ui.login
 
-import android.content.Context
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -40,6 +38,8 @@ class LoginViewModel : ViewModel() {
             try {
                 val loginResponse = App.instance.service.login(LoginRequest(email, password))
                 if (loginResponse.success) {
+                    val profile = App.instance.service.getProfile()
+                    profile.configurations
                     // Log in succeeded, token was set in the cookie jar
                     authenticationState.value = Authenticated
                 } else {
