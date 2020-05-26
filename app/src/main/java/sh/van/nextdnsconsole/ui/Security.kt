@@ -40,7 +40,7 @@ class SecurityViewModel : ViewModel() {
     val securityLiveData = MutableLiveData<Security>()
     fun getSecurity(service: NextDNSService) {
         viewModelScope.launch {
-            val configId = "13d18c"
+            val configId = App.instance.selectedConfig
             try {
                 val response = service.getSecurity(configId)
                 Timber.v("$response")
@@ -53,7 +53,7 @@ class SecurityViewModel : ViewModel() {
 
     fun setSecurity(security: Security, service: NextDNSService) {
         securityLiveData.value = security
-        val configId = "13d18c"
+        val configId = App.instance.selectedConfig
         viewModelScope.launch {
             try {
                 val result = service.updateSecurity(configId, security)

@@ -31,7 +31,7 @@ class SetupViewModel : ViewModel() {
     fun getSetup(service: NextDNSService) {
         viewModelScope.launch {
             try {
-                val configId = App.instance.profile?.configurations?.first()?.id.orEmpty()
+                val configId = App.instance.selectedConfig
                 val response = service.getSetup(configId)
                 Timber.v("$response")
                 setup.value = response

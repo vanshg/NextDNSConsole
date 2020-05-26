@@ -18,6 +18,7 @@ class App : Application() {
     lateinit var cookieJar: CookieJar
     lateinit var service: NextDNSService
     var profile: Profile? = null
+    val selectedConfig: String get() = profile?.configurations?.first()?.id.orEmpty()
 
     override fun onCreate() {
         super.onCreate()

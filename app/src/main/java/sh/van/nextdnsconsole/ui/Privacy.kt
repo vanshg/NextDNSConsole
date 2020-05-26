@@ -28,7 +28,7 @@ class PrivacyViewModel : ViewModel() {
     val privacy = MutableLiveData<Privacy>()
     fun getPrivacy(service: NextDNSService) {
         viewModelScope.launch {
-            val configId = "13d18c"
+            val configId = App.instance.selectedConfig
             try {
                 val response = service.getPrivacy(configId)
                 Timber.v("$response")
