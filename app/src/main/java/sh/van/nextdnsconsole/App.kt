@@ -9,12 +9,15 @@ import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersisto
 import com.readystatesoftware.chuck.ChuckInterceptor
 import okhttp3.CookieJar
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import sh.van.nextdns.api.NextDNSService
+import sh.van.nextdns.model.Profile
 import timber.log.Timber
 
 class App : Application() {
     lateinit var cookieJar: CookieJar
     lateinit var service: NextDNSService
+    var profile: Profile? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -30,7 +33,11 @@ class App : Application() {
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             )))
         service = NextDNSService.get(cookieJar,
-            OkHttpClient.Builder().addInterceptor(ChuckInterceptor(this)))
+            OkHttpClient.Builder()
+                .addInterceptor(HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
+                    override fun log(message: String) = Timber.tag("OkHttp").d(message)
+                }))
+                .addInterceptor(ChuckInterceptor(this)))
     }
 
     companion object {

@@ -1,9 +1,12 @@
 package sh.van.nextdnsconsole.ui.login
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -25,7 +28,10 @@ class LoginFragment : Fragment() {
 
         loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer {
             when (it) {
-                Authenticated -> navController.navigate(R.id.nav_setup)
+                Authenticated -> {
+                    navController.navigate(R.id.nav_setup)
+                    hideKeyboard()
+                }
                 else -> Timber.d("Auth State: $it")
             }
         })
@@ -46,4 +52,13 @@ class LoginFragment : Fragment() {
         loginViewModel.checkAuthState()
         return binding.root
     }
+}
+
+fun Fragment.hideKeyboard() {
+    view?.let { activity?.hideKeyboard(it) }
+}
+
+fun Context.hideKeyboard(view: View) {
+    val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 }

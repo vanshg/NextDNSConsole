@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import sh.van.nextdns.model.LoginErrors
 import sh.van.nextdns.model.LoginRequest
 import sh.van.nextdnsconsole.App
@@ -23,11 +24,11 @@ class LoginViewModel : ViewModel() {
     val loginError = MutableLiveData<LoginErrors>()
 
     fun checkAuthState() {
-        val url = HttpUrl.parse("https://api.nextdns.io")!!
+        val url = "https://api.nextdns.io".toHttpUrlOrNull()!!
         // Cookie Jar will automatically remove expired cookies
         val cookies = App.instance.cookieJar.loadForRequest(url)
-        if (cookies.map { it.name() }.contains("pst")) {
-            authenticationState.value = Authenticated
+        if (cookies.map { it.name }.contains("pst")) {
+            viewModelScope.launch { onLoginSuccess() }
         } else {
             authenticationState.value = Unauthenticated
         }
@@ -38,10 +39,8 @@ class LoginViewModel : ViewModel() {
             try {
                 val loginResponse = App.instance.service.login(LoginRequest(email, password))
                 if (loginResponse.success) {
-                    val profile = App.instance.service.getProfile()
-                    profile.configurations
                     // Log in succeeded, token was set in the cookie jar
-                    authenticationState.value = Authenticated
+                    onLoginSuccess()
                 } else {
                     authenticationState.value = InvalidAuthentication
                     loginError.value = loginResponse.errors
@@ -51,6 +50,15 @@ class LoginViewModel : ViewModel() {
                 Timber.e(e)
                 authenticationState.value = InvalidAuthentication
             }
+        }
+    }
+
+    private suspend fun onLoginSuccess() {
+        try {
+            App.instance.profile = App.instance.service.getProfile()
+            authenticationState.value = Authenticated
+        } catch (e: Exception) {
+            Timber.e(e)
         }
     }
 }

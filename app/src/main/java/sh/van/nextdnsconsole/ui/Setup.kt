@@ -30,8 +30,8 @@ class SetupViewModel : ViewModel() {
     val setup = MutableLiveData<Setup>()
     fun getSetup(service: NextDNSService) {
         viewModelScope.launch {
-            val configId = "13d18c"
             try {
+                val configId = App.instance.profile?.configurations?.first()?.id.orEmpty()
                 val response = service.getSetup(configId)
                 Timber.v("$response")
                 setup.value = response
@@ -52,22 +52,22 @@ fun SetupScreenLiveDataComponent(setupLiveData: LiveData<Setup>) {
 @Composable
 fun SetupScreen(setup: Setup) = Screen {
     Section(title = R.string.label_endpoints, subtitle = R.string.label_endpoints_subtitle) {
-        Field(name = R.string.label_id, value = setup.id)
-        Field(
+        TextItem(name = R.string.label_id, value = setup.id)
+        TextItem(
             name = R.string.label_dns_over_tls,
             value = stringResource(R.string.dns_over_tls, setup.id!!)
         )
-        Field(
+        TextItem(
             name = R.string.label_dns_over_https,
             value = stringResource(R.string.dns_over_https, setup.id!!)
         )
-        Field(name = R.string.label_ipv6, value = setup.ipv6)
+        TextItem(name = R.string.label_ipv6, value = setup.ipv6)
     }
 
     Section(title = R.string.label_linked_ip, subtitle = R.string.label_linked_ip_subtitle) {
-        Field(name = R.string.label_dns_servers, value = setup.linkedIpDNSServers)
-        Field(name = R.string.label_linked_ip, value = setup.linkedIp)
-        Field(name = R.string.label_ddns, value = setup.ddnsHostname)
+        TextItem(name = R.string.label_dns_servers, value = setup.linkedIpDNSServers)
+        TextItem(name = R.string.label_linked_ip, value = setup.linkedIp)
+        TextItem(name = R.string.label_ddns, value = setup.ddnsHostname)
     }
 
 }

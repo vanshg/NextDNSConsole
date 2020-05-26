@@ -12,6 +12,7 @@ import androidx.ui.layout.*
 import androidx.ui.material.Card
 import androidx.ui.material.CircularProgressIndicator
 import androidx.ui.material.MaterialTheme
+import androidx.ui.material.Switch
 import androidx.ui.res.stringResource
 import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
@@ -25,6 +26,7 @@ fun Screen(content: @Composable() () -> Unit) = MaterialTheme {
 fun Section(
     @StringRes title: Int,
     @StringRes subtitle: Int? = null,
+    @StringRes subtitle2: Int? = null,
     children: @Composable ColumnScope.() -> Unit
 ) {
     Card(modifier = Modifier.fillMaxWidth() + Modifier.padding(8.dp), elevation = 4.dp) {
@@ -36,7 +38,11 @@ fun Section(
             )
             if (subtitle != null) {
                 Spacer(modifier = Modifier.padding(2.dp))
-                Text(text = stringResource(subtitle), style = MaterialTheme.typography.subtitle2)
+                Text(text = stringResource(subtitle), style = MaterialTheme.typography.subtitle1)
+            }
+            if (subtitle2 != null) {
+                Spacer(modifier = Modifier.padding(2.dp))
+                Text(text = stringResource(subtitle2), style = MaterialTheme.typography.subtitle2)
             }
             Spacer(modifier = Modifier.padding(4.dp))
             children()
@@ -45,29 +51,53 @@ fun Section(
 }
 
 @Composable
-fun Field(@StringRes name: Int, value: List<String>?) {
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        TextForName(stringResource(id = name))
-        Column { value?.forEach { TextForValue(text = it) } }
-    }
-}
-
-@Composable
-fun Field(@StringRes name: Int, value: String?) {
+fun TextItem(@StringRes name: Int, value: List<String>?) {
     Row(
         modifier = Modifier.fillMaxWidth() + Modifier.padding(top = 6.dp, bottom = 6.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        TextForName(stringResource(id = name))
-        TextForValue(text = value.orEmpty())
+        NameText(stringResource(id = name))
+        Column { value?.forEach { ValueText(text = it) } }
     }
 }
 
 @Composable
-fun TextForName(text: String) = Text(text = text, style = MaterialTheme.typography.subtitle2)
+fun TextItem(@StringRes name: Int, value: String?) {
+    Row(
+        modifier = Modifier.fillMaxWidth() + Modifier.padding(top = 6.dp, bottom = 6.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        NameText(stringResource(id = name))
+        ValueText(text = value.orEmpty())
+    }
+}
 
 @Composable
-fun TextForValue(text: String) = Text(text = text, style = MaterialTheme.typography.body1)
+fun ToggleItem(@StringRes name: Int, value: Boolean, onCheckedChange: (Boolean) -> Unit = {}) {
+    Row(
+        modifier = Modifier.fillMaxWidth() + Modifier.padding(top = 6.dp, bottom = 6.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        NameText(stringResource(id = name))
+        Switch(checked = value, onCheckedChange = onCheckedChange)
+    }
+}
+
+@Composable
+fun SingleItemToggleSection(
+    @StringRes title: Int,
+    @StringRes subtitle: Int? = null,
+    @StringRes name: Int,
+    value: Boolean,
+    @StringRes subtitle2: Int? = null,
+    onCheckedChange: (Boolean) -> Unit = {}
+) = Section(title, subtitle, subtitle2) { ToggleItem(name, value, onCheckedChange) }
+
+@Composable
+fun NameText(text: String) = Text(text = text, style = MaterialTheme.typography.subtitle2)
+
+@Composable
+fun ValueText(text: String) = Text(text = text, style = MaterialTheme.typography.body1)
 
 @Preview
 @Composable

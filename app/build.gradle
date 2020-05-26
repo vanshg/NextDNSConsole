@@ -58,6 +58,7 @@ dependencies {
     implementation "com.github.franmontiel:PersistentCookieJar:v1.0.1"
     debugImplementation "com.readystatesoftware.chuck:library:1.1.0"
     releaseImplementation "com.readystatesoftware.chuck:library-no-op:1.1.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.7.1"
     implementation project(":model")
     implementation project(":api")
     testImplementation "junit:junit:4.13"
