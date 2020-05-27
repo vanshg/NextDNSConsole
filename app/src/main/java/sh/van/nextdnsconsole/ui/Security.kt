@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.ui.core.Modifier
+import androidx.ui.foundation.Icon
 import androidx.ui.foundation.Image
 import androidx.ui.foundation.Text
 import androidx.ui.graphics.BlendMode
@@ -23,6 +24,7 @@ import androidx.ui.res.vectorResource
 import kotlinx.coroutines.launch
 import sh.van.nextdns.api.NextDNSService
 import sh.van.nextdns.model.Security
+import sh.van.nextdns.model.TLD
 import sh.van.nextdnsconsole.App
 import sh.van.nextdnsconsole.R
 import timber.log.Timber
@@ -145,34 +147,24 @@ fun SecurityScreen(
         security.blockParkedDomains ?: false
     )
 
-    Section(R.string.label_block_tlds, R.string.label_block_tlds_subtitle) {
-        security.blockedTlds?.forEach {
-            var text = when {
-                !it.unicode.isNullOrEmpty() -> it.unicode!!
-                !it.tld.isNullOrEmpty() -> it.tld!!
-                else -> ""
-            }
-            if (!it.description.isNullOrEmpty()) {
-                // TODO: Make the parenthesized part a different color
-                text = "$text (${it.description})"
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(text)
-                IconButton(onClick = { Timber.e("TODO: Remove TLD") }) {
-                    Image(
-                        asset = vectorResource(R.drawable.ic_delete), colorFilter = ColorFilter(
-                            Color.Black, BlendMode.srcATop
-                        )
-                    )
-                }
-            }
+    DeletableItemListSection(
+        R.string.label_block_tlds,
+        R.string.label_block_tlds_subtitle,
+        R.string.label_add_a_tld,
+        security.blockedTlds,
+        onAddButtonClick = { Timber.e("TODO: Add a TLD") },
+        onDeleteButtonClick = { Timber.e("TODO: Remove a TLD") }
+    ) {
+        var text = when {
+            !it.unicode.isNullOrEmpty() -> it.unicode!!
+            !it.tld.isNullOrEmpty() -> it.tld!!
+            else -> ""
         }
-        Button(onClick = { Timber.e("TODO: Add a TLD") }) {
-            Text(stringResource(R.string.label_add_a_tld))
+        if (!it.description.isNullOrEmpty()) {
+            // TODO: Make the parenthesized part a different color
+            text = "$text (${it.description})"
         }
+        Text(text)
     }
 
     SingleItemToggleSection(
@@ -184,9 +176,3 @@ fun SecurityScreen(
     )
 
 }
-
-//@Preview
-//@Composable
-//fun PreviewSecurityScreen() {
-//    SecurityScreen()
-//}

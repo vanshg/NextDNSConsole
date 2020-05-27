@@ -4,18 +4,18 @@ import androidx.annotation.StringRes
 import androidx.compose.Composable
 import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
-import androidx.ui.foundation.Box
-import androidx.ui.foundation.ContentGravity
-import androidx.ui.foundation.Text
-import androidx.ui.foundation.VerticalScroller
+import androidx.ui.foundation.*
+import androidx.ui.graphics.BlendMode
+import androidx.ui.graphics.Color
+import androidx.ui.graphics.ColorFilter
 import androidx.ui.layout.*
-import androidx.ui.material.Card
-import androidx.ui.material.CircularProgressIndicator
-import androidx.ui.material.MaterialTheme
-import androidx.ui.material.Switch
+import androidx.ui.material.*
 import androidx.ui.res.stringResource
+import androidx.ui.res.vectorResource
 import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
+import sh.van.nextdnsconsole.R
+import timber.log.Timber
 
 @Composable
 fun Screen(content: @Composable() () -> Unit) = MaterialTheme {
@@ -45,7 +45,7 @@ fun Section(
                 Text(text = stringResource(subtitle2), style = MaterialTheme.typography.subtitle2)
             }
             Spacer(modifier = Modifier.padding(4.dp))
-            children()
+            ColumnScope.children()
         }
     }
 }
@@ -84,6 +84,19 @@ fun ToggleItem(@StringRes name: Int, value: Boolean, onCheckedChange: (Boolean) 
 }
 
 @Composable
+fun DeletableItem(onDeleteClicked: () -> Unit, children: @Composable() (ColumnScope.() -> Unit)) =
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column(modifier = Modifier.weight(10f)) { children() }
+        IconButton(
+            modifier = Modifier.weight(1f),
+            onClick = onDeleteClicked
+        ) { Icon(asset = vectorResource(R.drawable.ic_delete)) }
+    }
+
+@Composable
 fun SingleItemToggleSection(
     @StringRes title: Int,
     @StringRes subtitle: Int? = null,
@@ -92,6 +105,32 @@ fun SingleItemToggleSection(
     @StringRes subtitle2: Int? = null,
     onCheckedChange: (Boolean) -> Unit = {}
 ) = Section(title, subtitle, subtitle2) { ToggleItem(name, value, onCheckedChange) }
+
+@Composable
+fun <T> ListSection(
+    @StringRes title: Int,
+    @StringRes subtitle: Int? = null,
+    @StringRes buttonText: Int,
+    items: Iterable<T>?,
+    onButtonClick: () -> Unit,
+    listItem: @Composable ColumnScope.(T) -> Unit
+) = Section(title, subtitle) {
+    items?.forEach { listItem(it) }
+    Button(onClick = onButtonClick) { Text(stringResource(buttonText)) }
+}
+
+@Composable
+fun <T> DeletableItemListSection(
+    @StringRes title: Int,
+    @StringRes subtitle: Int? = null,
+    @StringRes buttonText: Int,
+    items: Iterable<T>?,
+    onAddButtonClick: () -> Unit,
+    onDeleteButtonClick: () -> Unit,
+    listItem: @Composable ColumnScope.(T) -> Unit
+) = ListSection(title, subtitle, buttonText, items, onAddButtonClick) {
+    DeletableItem(onDeleteButtonClick) { listItem(it) }
+}
 
 @Composable
 fun NameText(text: String) = Text(text = text, style = MaterialTheme.typography.subtitle2)
