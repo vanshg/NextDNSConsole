@@ -17,6 +17,9 @@
     <string name="menu_logs">Logs</string>
     <string name="menu_settings">Settings</string>
 
+    <!-- Common -->
+    <string name="label_button_add">Add</string>
+
     <!-- Login -->
     <string name="login_email_hint">Email</string>
     <string name="login_password_hint">Password</string>
@@ -81,4 +84,17 @@
     <string name="label_block_csam_subtitle">Block domains hosting child sexual abuse material with the help of Project Arachnid, operated by the Canadian Centre for Child Protection</string>
     <string name="label_block_csam_subtitle2">No information is transmitted back to Project Arachnid when a domain is blocked.</string>
 
+    <!-- Privacy -->
+    <string name="label_blocklists">Blocklists</string>
+    <string name="label_blocklists_subtitle">Block ads &amp; trackers using the most popular blocklists available—all updated in real-time.</string>
+    <string name="label_add_a_blocklist">Add a Blocklist</string>
+
+    <string name="label_native_tracking_protection">Native Tracking Protection</string>
+    <string name="label_native_tracking_protection_subtitle">Block wide spectrum trackers—often operating at the operating system level—that track your activity on a device. This could include all the websites you visit, everything you type or your location at all times.</string>
+
+    <string name="label_block_disguised_third_party_trackers">Block Disguised Third-Party Trackers</string>
+    <string name="label_block_disguised_third_party_trackers_subtitle">Automatically detect and block third-party trackers disguising themselves as first-party to circumvent recent browser\'s privacy protections like ITP.</string>
+
+    <string name="label_allow_affiliate_and_tracking_links">Allow Affiliate &amp; Tracking Links</string>
+    <string name="label_allow_affiliate_and_tracking_links_subtitle">Allow affiliate &amp; tracking domains common on deals websites, in emails or in search results. Those usually only get called after manually clicking on a link.</string>
 </resources>
