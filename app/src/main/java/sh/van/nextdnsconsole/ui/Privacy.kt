@@ -10,7 +10,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.ui.foundation.Text
 import androidx.ui.layout.Row
 import androidx.ui.livedata.observeAsState
-import androidx.ui.tooling.preview.Preview
 import kotlinx.coroutines.launch
 import sh.van.nextdns.api.NextDNSService
 import sh.van.nextdns.model.Privacy

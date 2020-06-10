@@ -28,7 +28,7 @@ class ParentalControlViewModel : ViewModel() {
     val parentalControl = MutableLiveData<ParentalControl>()
     fun getParentalControl(service: NextDNSService) {
         viewModelScope.launch {
-            val configId = "13d18c"
+            val configId = App.instance.selectedConfig
             try {
                 val response = service.getParentalControl(configId)
                 Timber.v("$response")

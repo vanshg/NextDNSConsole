@@ -28,7 +28,7 @@ class SettingsViewModel : ViewModel() {
     val settings = MutableLiveData<Settings>()
     fun getSettings(service: NextDNSService) {
         viewModelScope.launch {
-            val configId = "13d18c"
+            val configId = App.instance.selectedConfig
             try {
                 val response = service.getSettings(configId)
                 Timber.v("$response")

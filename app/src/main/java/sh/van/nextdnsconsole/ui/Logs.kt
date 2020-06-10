@@ -28,7 +28,7 @@ class LogsViewModel : ViewModel() {
     val logs = MutableLiveData<Logs>()
     fun getLogs(service: NextDNSService) {
         viewModelScope.launch {
-            val configId = "13d18c"
+            val configId = App.instance.selectedConfig
             try {
                 val response = service.getLogs(configId)
                 Timber.v("$response")

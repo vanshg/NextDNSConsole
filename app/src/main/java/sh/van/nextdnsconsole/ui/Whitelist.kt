@@ -28,7 +28,7 @@ class WhitelistViewModel : ViewModel() {
     val whitelist = MutableLiveData<List<AccessControlListItem>>()
     fun getWhitelist(service: NextDNSService) {
         viewModelScope.launch {
-            val configId = "13d18c"
+            val configId = App.instance.selectedConfig
             try {
                 val response = service.getWhitelist(configId)
                 Timber.v("$response")

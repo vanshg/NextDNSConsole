@@ -28,7 +28,7 @@ class BlacklistViewModel : ViewModel() {
     val blacklist = MutableLiveData<List<AccessControlListItem>>()
     fun getBlacklist(service: NextDNSService) {
         viewModelScope.launch {
-            val configId = "13d18c"
+            val configId = App.instance.selectedConfig
             try {
                 val response = service.getBlacklist(configId)
                 Timber.v("$response")

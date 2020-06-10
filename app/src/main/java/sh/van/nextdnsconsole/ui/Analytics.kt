@@ -11,6 +11,7 @@ import androidx.ui.tooling.preview.Preview
 import kotlinx.coroutines.launch
 import sh.van.nextdns.api.NextDNSService
 import sh.van.nextdns.model.*
+import sh.van.nextdnsconsole.App
 import timber.log.Timber
 
 class AnalyticsFragment : BaseFragment() {
@@ -49,7 +50,7 @@ class AnalyticsViewModel : ViewModel() {
     val trafficDestinationCountries = MutableLiveData<Map<String, CountryStats>>()
     fun loadData(service: NextDNSService) {
         viewModelScope.launch {
-            val configId = "13d18c"
+            val configId = App.instance.selectedConfig
             try {
                 counters.value = service.getCounters(configId)
                 topResolvedDomains.value = service.getTopResolvedDomains(configId)
