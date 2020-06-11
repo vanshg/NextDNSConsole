@@ -1,43 +1,34 @@
 package sh.van.nextdnsconsole
 
 import android.os.Bundle
-import android.view.Menu
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.compose.Composable
-import androidx.compose.MutableState
+import androidx.compose.getValue
 import androidx.compose.setValue
 import androidx.compose.state
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.ui.core.Modifier
 import androidx.ui.core.setContent
 import androidx.ui.foundation.Icon
-import androidx.ui.layout.padding
+import androidx.ui.foundation.Text
+import androidx.ui.foundation.clickable
+import androidx.ui.layout.Column
+import androidx.ui.livedata.observeAsState
+import androidx.ui.material.*
 import androidx.ui.res.stringResource
 import androidx.ui.res.vectorResource
-import androidx.ui.unit.dp
-import com.google.android.material.navigation.NavigationView
-import sh.van.nextdnsconsole.databinding.ActivityMainBinding
+import sh.van.nextdns.model.Setup
+import sh.van.nextdnsconsole.ui.SetupScreen
+import sh.van.nextdnsconsole.ui.SetupViewModel
+import sh.van.nextdnsconsole.ui.login.LoginViewModel
+import sh.van.nextdnsconsole.ui.login.LoginViewModel.AuthenticationState.Authenticated
 import timber.log.Timber
-import kotlin.reflect.KProperty
-import androidx.compose.getValue
-import androidx.compose.setValue
-import androidx.ui.foundation.Text
-import androidx.ui.layout.Column
-import androidx.ui.material.*
-import androidx.ui.tooling.preview.Preview
 
-data class TabItem(val title: Int, val icon: Int, val ui: () -> Unit)
-
-@Preview
 @Composable
-fun BottomNav() {
+fun NextDnsConsoleScreen(setupLiveData: LiveData<Setup>, onNewConfigSelected: () -> Unit) {
+    val setup by setupLiveData.observeAsState()
     val items = listOf(
         R.string.menu_setup to R.drawable.ic_menu_setup,
         R.string.menu_security to R.drawable.ic_menu_security,
@@ -49,22 +40,45 @@ fun BottomNav() {
         R.string.menu_logs to R.drawable.ic_menu_logs,
         R.string.menu_settings to R.drawable.ic_menu_settings
     )
-    var selectedIndex by state { 0 }
     Column {
+        val configs = listOf("13d18c", "foobar")
+        var selectedConfigIndex by state { 0 }
+        var expanded by state { false }
+        TopAppBar(
+            title = { Text(stringResource(R.string.app_name)) },
+            actions = {
+                DropdownMenu(
+                    toggle = { Text(configs[selectedConfigIndex]) },
+                    toggleModifier = Modifier.clickable { expanded = !expanded },
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }) {
+                    configs.forEachIndexed { index, s ->
+                        DropdownMenuItem(
+                            onClick = {
+                                expanded = false
+                                selectedConfigIndex = index
+                        }) {
+                            Text(s)
+                        }
+                    }
+                }
+            }
+        )
+        var selectedTabIndex by state { 0 }
         TabRow(
-            selectedIndex = selectedIndex,
+            selectedIndex = selectedTabIndex,
             scrollable = true,
             items = items
         ) { index, item ->
             Tab(
                 text = { Text(text = stringResource(id = item.first)) },
                 icon = { Icon(asset = vectorResource(id = item.second)) },
-                selected = selectedIndex == index,
-                onSelected = { selectedIndex = index }
+                selected = selectedTabIndex == index,
+                onSelected = { selectedTabIndex = index }
             )
         }
-        when (items[selectedIndex].first) {
-            R.string.menu_setup -> Text("This is setup") // SetupScreen()
+        when (items[selectedTabIndex].first) {
+            R.string.menu_setup -> SetupScreen(setup)
             R.string.menu_security -> Text("This is security") // SecurityScreen()
             R.string.menu_privacy -> Text("This is privacy") // PrivacyScreen()
             R.string.menu_parental_control -> Text("This is parental_control") // ParentalControlScreen()
@@ -77,14 +91,22 @@ fun BottomNav() {
     }
 }
 
-
 class MainActivity : AppCompatActivity() {
 
 //    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { BottomNav() }
+        val loginViewModel: LoginViewModel by viewModels()
+        val setupViewModel: SetupViewModel by viewModels()
+        loginViewModel.checkAuthState()
+        loginViewModel.authenticationState.observe(this, Observer {
+            when (it) {
+                Authenticated -> setupViewModel.getSetup(App.instance.service)
+                else -> Timber.d("Auth State: $it")
+            }
+        })
+        setContent { NextDnsConsoleScreen(setupViewModel.setupLiveData) {} }
 //        val binding = ActivityMainBinding.inflate(layoutInflater)
 //        setContentView(binding.root)
 //        setSupportActionBar(binding.appBar.toolbar)

@@ -1,13 +1,9 @@
 package sh.van.nextdnsconsole.ui
 
 import androidx.compose.Composable
-import androidx.compose.getValue
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.ui.livedata.observeAsState
 import androidx.ui.res.stringResource
 import androidx.ui.tooling.preview.Preview
 import kotlinx.coroutines.launch
@@ -17,24 +13,15 @@ import sh.van.nextdnsconsole.App
 import sh.van.nextdnsconsole.R
 import timber.log.Timber
 
-class SetupFragment : BaseFragment() {
-    @Composable
-    override fun initialize() {
-        val viewModel: SetupViewModel by viewModels()
-        viewModel.getSetup(App.instance.service)
-        SetupScreenLiveDataComponent(viewModel.setup)
-    }
-}
-
 class SetupViewModel : ViewModel() {
-    val setup = MutableLiveData<Setup>()
+    val setupLiveData = MutableLiveData<Setup>()
     fun getSetup(service: NextDNSService) {
         viewModelScope.launch {
             try {
                 val configId = App.instance.selectedConfig
                 val response = service.getSetup(configId)
                 Timber.v("$response")
-                setup.value = response
+                setupLiveData.value = response
             } catch (e: Exception) {
                 Timber.e(e)
             }
@@ -43,14 +30,11 @@ class SetupViewModel : ViewModel() {
 }
 
 @Composable
-fun SetupScreenLiveDataComponent(setupLiveData: LiveData<Setup>) {
-    val setup by setupLiveData.observeAsState()
-    if (setup == null) LoadingIndicatorCentered()
-    else SetupScreen(setup = setup!!)
-}
-
-@Composable
-fun SetupScreen(setup: Setup) = Screen {
+fun SetupScreen(setup: Setup?) = Screen {
+    if (setup == null) {
+        LoadingIndicatorCentered()
+        return@Screen
+    }
     Section(title = R.string.label_endpoints, subtitle = R.string.label_endpoints_subtitle) {
         TextItem(name = R.string.label_id, value = setup.id)
         TextItem(
