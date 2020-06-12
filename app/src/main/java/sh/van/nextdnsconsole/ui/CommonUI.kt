@@ -4,10 +4,10 @@ import androidx.annotation.StringRes
 import androidx.compose.Composable
 import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
-import androidx.ui.foundation.*
-import androidx.ui.graphics.BlendMode
-import androidx.ui.graphics.Color
-import androidx.ui.graphics.ColorFilter
+import androidx.ui.foundation.Box
+import androidx.ui.foundation.ContentGravity
+import androidx.ui.foundation.Icon
+import androidx.ui.foundation.Text
 import androidx.ui.layout.*
 import androidx.ui.material.*
 import androidx.ui.res.stringResource
@@ -15,12 +15,6 @@ import androidx.ui.res.vectorResource
 import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
 import sh.van.nextdnsconsole.R
-import timber.log.Timber
-
-@Composable
-fun Screen(content: @Composable() () -> Unit) = MaterialTheme {
-    VerticalScroller { Column(modifier = Modifier.fillMaxWidth()) { content() } }
-}
 
 @Composable
 fun Section(

@@ -6,6 +6,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.ui.core.Modifier
+import androidx.ui.layout.Column
+import androidx.ui.layout.fillMaxWidth
 import androidx.ui.livedata.observeAsState
 import androidx.ui.tooling.preview.Preview
 import kotlinx.coroutines.launch
@@ -103,8 +106,11 @@ fun AnalyticsScreenLiveDataComponent(
 }
 
 @Composable
-fun AnalyticsScreen() = Screen {
-
+fun AnalyticsScreen() = Column(modifier = Modifier.fillMaxWidth()) {
+    if (null == null) {
+        LoadingIndicatorCentered()
+        return@Column
+    }
 }
 
 @Preview

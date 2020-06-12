@@ -1,15 +1,14 @@
 package sh.van.nextdnsconsole.ui
 
 import androidx.compose.Composable
-import androidx.compose.getValue
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.ui.core.Modifier
 import androidx.ui.foundation.Text
+import androidx.ui.layout.Column
 import androidx.ui.layout.Row
-import androidx.ui.livedata.observeAsState
+import androidx.ui.layout.fillMaxWidth
 import kotlinx.coroutines.launch
 import sh.van.nextdns.api.NextDNSService
 import sh.van.nextdns.model.Privacy
@@ -17,24 +16,15 @@ import sh.van.nextdnsconsole.App
 import sh.van.nextdnsconsole.R
 import timber.log.Timber
 
-class PrivacyFragment : BaseFragment() {
-    @Composable
-    override fun initialize() {
-        val viewModel: PrivacyViewModel by viewModels()
-        viewModel.getPrivacy(App.instance.service)
-        PrivacyScreenLiveDataComponent(viewModel.privacy)
-    }
-}
-
 class PrivacyViewModel : ViewModel() {
-    val privacy = MutableLiveData<Privacy>()
+    val privacyLiveData = MutableLiveData<Privacy>()
     fun getPrivacy(service: NextDNSService) {
         viewModelScope.launch {
             val configId = App.instance.selectedConfig
             try {
                 val response = service.getPrivacy(configId)
                 Timber.v("$response")
-                privacy.value = response
+                privacyLiveData.value = response
             } catch (e: Exception) {
                 Timber.e(e)
             }
@@ -43,14 +33,11 @@ class PrivacyViewModel : ViewModel() {
 }
 
 @Composable
-fun PrivacyScreenLiveDataComponent(privacyLiveData: LiveData<Privacy>) {
-    val privacy by privacyLiveData.observeAsState()
-    if (privacy == null) LoadingIndicatorCentered()
-    else PrivacyScreen(privacy!!)
-}
-
-@Composable
-fun PrivacyScreen(privacy: Privacy) = Screen {
+fun PrivacyScreen(privacy: Privacy?) = Column(modifier = Modifier.fillMaxWidth()) {
+    if (privacy == null) {
+        LoadingIndicatorCentered()
+        return@Column
+    }
     DeletableItemListSection(
         R.string.label_blocklists,
         R.string.label_blocklists_subtitle,

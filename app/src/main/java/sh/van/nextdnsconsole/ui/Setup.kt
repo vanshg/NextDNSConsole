@@ -4,6 +4,9 @@ import androidx.compose.Composable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.ui.core.Modifier
+import androidx.ui.layout.Column
+import androidx.ui.layout.fillMaxWidth
 import androidx.ui.res.stringResource
 import androidx.ui.tooling.preview.Preview
 import kotlinx.coroutines.launch
@@ -30,10 +33,10 @@ class SetupViewModel : ViewModel() {
 }
 
 @Composable
-fun SetupScreen(setup: Setup?) = Screen {
+fun SetupScreen(setup: Setup?) = Column(modifier = Modifier.fillMaxWidth()) {
     if (setup == null) {
         LoadingIndicatorCentered()
-        return@Screen
+        return@Column
     }
     Section(title = R.string.label_endpoints, subtitle = R.string.label_endpoints_subtitle) {
         TextItem(name = R.string.label_id, value = setup.id)

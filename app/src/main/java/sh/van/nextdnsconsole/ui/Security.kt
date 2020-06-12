@@ -1,42 +1,19 @@
 package sh.van.nextdnsconsole.ui
 
 import androidx.compose.Composable
-import androidx.compose.getValue
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.ui.core.Modifier
-import androidx.ui.foundation.Icon
-import androidx.ui.foundation.Image
 import androidx.ui.foundation.Text
-import androidx.ui.graphics.BlendMode
-import androidx.ui.graphics.Color
-import androidx.ui.graphics.ColorFilter
-import androidx.ui.layout.Arrangement
-import androidx.ui.layout.Row
+import androidx.ui.layout.Column
 import androidx.ui.layout.fillMaxWidth
-import androidx.ui.livedata.observeAsState
-import androidx.ui.material.Button
-import androidx.ui.material.IconButton
-import androidx.ui.res.stringResource
-import androidx.ui.res.vectorResource
 import kotlinx.coroutines.launch
 import sh.van.nextdns.api.NextDNSService
 import sh.van.nextdns.model.Security
-import sh.van.nextdns.model.TLD
 import sh.van.nextdnsconsole.App
 import sh.van.nextdnsconsole.R
 import timber.log.Timber
-
-class SecurityFragment : BaseFragment() {
-    @Composable
-    override fun initialize() {
-        val viewModel: SecurityViewModel by viewModels()
-        viewModel.getSecurity(App.instance.service)
-        SecurityScreenLiveDataComponent(viewModel)
-    }
-}
 
 class SecurityViewModel : ViewModel() {
     val securityLiveData = MutableLiveData<Security>()
@@ -70,17 +47,13 @@ class SecurityViewModel : ViewModel() {
 }
 
 @Composable
-fun SecurityScreenLiveDataComponent(securityViewModel: SecurityViewModel) {
-    val security by securityViewModel.securityLiveData.observeAsState()
-    if (security == null) LoadingIndicatorCentered()
-    else SecurityScreen(security!!, securityViewModel)
-}
-
-@Composable
 fun SecurityScreen(
-    security: Security,
-    viewModel: SecurityViewModel
-) = Screen {
+    security: Security?
+) = Column(modifier = Modifier.fillMaxWidth()) {
+    if (security == null) {
+        LoadingIndicatorCentered()
+        return@Column
+    }
     SingleItemToggleSection(
         R.string.label_threat_intelligence_feeds,
         R.string.label_threat_intelligence_feeds_subtitle,
@@ -128,10 +101,7 @@ fun SecurityScreen(
         R.string.label_dga_protection_subtitle,
         R.string.label_enable_dga_protection,
         security.dgaProtection ?: false
-    ) {
-        Timber.e("EHLLOOE")
-        viewModel.setSecurity(security.copy(dgaProtection = it), App.instance.service)
-    }
+    )
 
     SingleItemToggleSection(
         R.string.label_block_nrds,
